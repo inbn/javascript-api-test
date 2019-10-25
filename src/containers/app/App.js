@@ -10,8 +10,11 @@ class App extends React.Component {
       searchName: "",
       searchResults: null,
       beerTypesSelected: [],
-      basket: []
+      basket: {},
+      isViewingBasket: false
     };
+
+    this.basketKey = 1;
 
     this.onHandleChange = this.onHandleChange.bind(this);
     this.onGetBrewByName = this.onGetBrewByName.bind(this);
@@ -59,8 +62,9 @@ class App extends React.Component {
       beerTypesSelected.push(result.name);
     }
 
-    if (basket.length < 60) {
-      basket.push(result);
+    if (Object.keys(basket).length < 60) {
+      basket[this.basketKey] = result;
+      this.basketKey++;
       this.setState({ basket });
     } else {
       // TODO: Create  friendlier modal dialog or banner to indicate limit of 60 reached
@@ -68,11 +72,36 @@ class App extends React.Component {
     }
   };
 
+  onRemovefromBasket = brewId => {
+    let basket = this.state.basket;
+    delete basket[brewId];
+    this.setState({ basket });
+  };
+
+  onViewBasket = () => {
+    this.setState({ isViewingBasket: !this.state.isViewingBasket });
+  };
+
   render = () => {
-    const { searchName, searchResults, basket } = this.state;
+    const { searchName, searchResults, basket, isViewingBasket } = this.state;
     return (
       <section>
-        <h2>Basket ({basket.length})</h2>
+        <h2>Basket ({Object.keys(basket).length})</h2>
+        <button onClick={this.onViewBasket}>View Basket</button>
+        {isViewingBasket &&
+          Object.keys(basket).map(brewId => (
+            <section key={brewId}>
+              <div className="c-app__item">
+                <img src={basket[brewId].image_url} className="c-app__img" />
+                <span className="c-app__title">
+                  {basket[brewId].name} ({basket[brewId].tagline})
+                  <button onClick={this.onRemovefromBasket.bind(this, brewId)}>
+                    Remove
+                  </button>
+                </span>
+              </div>
+            </section>
+          ))}
         <form onSubmit={this.onGetBrewByName}>
           <input
             name="searchName"
