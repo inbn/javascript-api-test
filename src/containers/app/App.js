@@ -55,7 +55,7 @@ class App extends React.Component {
       !beerTypesSelected.includes(result.name) &&
       beerTypesSelected.length === 3
     ) {
-      // TODO: Create  friendlier modal dialog or banner to indicate limit of 10 types of beer reached
+      // TODO: Create friendlier modal dialog or banner to indicate limit of 10 types of beer reached
       return alert("Sorry limit of beer types reached");
     }
 
