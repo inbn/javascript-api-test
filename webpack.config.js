@@ -1,12 +1,13 @@
 const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   cache: false,
   entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, "./build/"),
+    path: path.resolve(__dirname, "build"),
     filename: "js/[name].js",
     publicPath: "/"
   },
@@ -15,12 +16,15 @@ module.exports = {
       template: "./src/index.html",
       filename: "index.html",
       hash: true
+    }),
+    new MiniCssExtractPlugin({
+      filename: "css/[name].css"
     })
   ],
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.js$/,
         loader: "babel-loader",
         options: {
           presets: [
@@ -51,19 +55,9 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.html$/,
-        use: "html-loader"
+        test: /\.(css|scss)$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
       }
     ]
-  },
-  devServer: {
-    host: "0.0.0.0",
-    disableHostCheck: true,
-    /**
-    Dev enviroment solution to routing -- better to user HashRouter or Server side routing
-    */
-    historyApiFallback: true,
-    contentBase: "./",
-    hot: true
   }
 };

@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css?family=Exo&display=swap");
+
+body,
+input {
+  font-family: "Exo", sans-serif;
+}
+
+.c-app {
+  &__item {
+    padding: 10px;
+    &:hover {
+      background-color: #b6dcf0;
+    }
+  }
+
+  &__img {
+    height: 90px;
+    vertical-align: middle;
+  }
+
+  &__title {
+    vertical-align: middle;
+    margin-left: 20px;
+  }
+}
