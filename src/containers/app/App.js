@@ -85,6 +85,12 @@ class App extends React.Component {
 
   render = () => {
     const { searchName, searchResults, basket, isViewingBasket } = this.state;
+
+    /*
+    TO DO organise basket so that the same type of beer is only listed once, with a count next to it
+    e.g. Pale Ale x 2
+    */
+    
     return (
       <section>
       <h1>Beers, Beers & More Beers</h1>
@@ -97,10 +103,6 @@ class App extends React.Component {
             {isViewingBasket ? "Hide Basket" : "View Basket"}
           </button>
         )}
-        /*
-        TO DO organise basket so that the same type of beer is only listed once, with a count next to it
-        e.g. Pale Ale x 2
-        */
         {isViewingBasket &&
           Object.keys(basket).map(brewId => (
             <section key={brewId}>
