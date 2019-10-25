@@ -9,6 +9,7 @@ class App extends React.Component {
     this.state = {
       searchName: "",
       searchResults: null,
+      beerTypesSelected: [],
       basket: []
     };
 
@@ -23,6 +24,8 @@ class App extends React.Component {
     this.setState({ [name]: value });
   };
 
+  // TO DO add more ways of refining search e.g. by beer type ... hops, yeast, malt
+  // perhaps with drop downs etc
   onGetBrewByName = e => {
     e.preventDefault();
     const { searchName } = this.state;
@@ -41,10 +44,28 @@ class App extends React.Component {
   };
 
   onAddToBasket = result => {
+    const { beerTypesSelected } = this.state;
     let basket = this.state.basket;
 
-    basket.push(result);
-    this.setState({ basket });
+    if (
+      !beerTypesSelected.includes(result.name) &&
+      beerTypesSelected.length === 3
+    ) {
+      // TODO: Create  friendlier modal dialog or banner to indicate limit of 10 types of beer reached
+      return alert("Sorry limit of beer types reached");
+    }
+
+    if (!beerTypesSelected.includes(result.name)) {
+      beerTypesSelected.push(result.name);
+    }
+
+    if (basket.length < 60) {
+      basket.push(result);
+      this.setState({ basket });
+    } else {
+      // TODO: Create  friendlier modal dialog or banner to indicate limit of 60 reached
+      alert("Sorry limit number of beers reached");
+    }
   };
 
   render = () => {
