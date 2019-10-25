@@ -31,3 +31,29 @@ To update build:
   npm run build
   firebase deploy
 ```
+
+
+# Objectives met (some are outside of test requirements)
+* Created single page application
+* Added ability to search beers by name
+* Display search results with image, name and taglines
+* Allow user to add beer to basket
+* Limit basket to only accept 10 kinds of beer (beer name)
+* Limit basket to accept no more than 60 beers
+* Display selected beers in basket
+* Able to remove a selected beer from basket
+* Include instructions on how to run application locally
+* Host application on firebase
+* Include instructions on how to view and amend hosted site
+
+
+# Objectives I would like to have achieved with more time
+* Design a better looking and more user friendly site
+* Include more ways of refining search e.g. by beer type ... hops, yeast, malt, perhaps with drop downs etc
+* Include error handling
+* Create friendlier modal dialog indicate errors and warnings
+* Organise basket so that the same type of beer is only listed once, with a count next to it
+e.g. Pale Ale x 2
+* Add the concept of users so a username can be associated with a beer choice
+* Add database e.g. firestore to hold users details and basket
+* Add authentication through firebase so only the expected 30 employees can view/ammend beer choices
