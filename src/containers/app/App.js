@@ -80,14 +80,27 @@ class App extends React.Component {
 
   onViewBasket = () => {
     this.setState({ isViewingBasket: !this.state.isViewingBasket });
+    this.onResetSearch();
   };
 
   render = () => {
     const { searchName, searchResults, basket, isViewingBasket } = this.state;
     return (
       <section>
-        <h2>Basket ({Object.keys(basket).length})</h2>
-        <button onClick={this.onViewBasket}>View Basket</button>
+      <h1>Beers, Beers & More Beers</h1>
+      <p>It's that time of year to select your beer!</p>
+      <p>Anyone is free to select any kind of beer they would like.</p>
+      <p>However, there is a limit of the number of beers, 60 and a limit on the range of beers, 10</p>
+        <h2 className="c-app__basket-header">Basket ({Object.keys(basket).length}/60)</h2>
+        {Object.keys(basket).length > 0 && (
+          <button onClick={this.onViewBasket}>
+            {isViewingBasket ? "Hide Basket" : "View Basket"}
+          </button>
+        )}
+        /*
+        TO DO organise basket so that the same type of beer is only listed once, with a count next to it
+        e.g. Pale Ale x 2
+        */
         {isViewingBasket &&
           Object.keys(basket).map(brewId => (
             <section key={brewId}>
@@ -115,7 +128,6 @@ class App extends React.Component {
         {searchResults !== null && (
           <button onClick={this.onResetSearch}>Reset Search</button>
         )}
-
         {searchResults !== null && (
           <section>
             <h3>Brews Found</h3>
