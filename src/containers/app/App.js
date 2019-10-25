@@ -40,6 +40,7 @@ class App extends React.Component {
           this.setState({ searchResults: response.data });
         }
       });
+    // TO DO error handling
   };
 
   onResetSearch = () => {
@@ -89,71 +90,89 @@ class App extends React.Component {
     /*
     TO DO organise basket so that the same type of beer is only listed once, with a count next to it
     e.g. Pale Ale x 2
+
+    TO DO improve layout and colours and fonts
     */
-    
+
     return (
       <section>
-      <h1>Beers, Beers & More Beers</h1>
-      <p>It's that time of year to select your beer!</p>
-      <p>Anyone is free to select any kind of beer they would like.</p>
-      <p>However, there is a limit of the number of beers, 60 and a limit on the range of beers, 10</p>
-        <h2 className="c-app__basket-header">Basket ({Object.keys(basket).length}/60)</h2>
-        {Object.keys(basket).length > 0 && (
-          <button onClick={this.onViewBasket}>
-            {isViewingBasket ? "Hide Basket" : "View Basket"}
-          </button>
-        )}
-        {isViewingBasket &&
-          Object.keys(basket).map(brewId => (
-            <section key={brewId}>
-              <div className="c-app__item">
-                <img src={basket[brewId].image_url} className="c-app__img" />
-                <span className="c-app__title">
-                  {basket[brewId].name} ({basket[brewId].tagline})
-                  <button onClick={this.onRemovefromBasket.bind(this, brewId)}>
-                    Remove
-                  </button>
-                </span>
-              </div>
-            </section>
-          ))}
-        <form onSubmit={this.onGetBrewByName}>
-          <input
-            name="searchName"
-            type="text"
-            placeholder="Name"
-            value={searchName}
-            onChange={this.onHandleChange}
-          />
-          <input type="submit" value="Search by name" />
-        </form>
-        {searchResults !== null && (
-          <button onClick={this.onResetSearch}>Reset Search</button>
-        )}
-        {searchResults !== null && (
-          <section>
-            <h3>Brews Found</h3>
-            {searchResults.length === 0 ? (
-              <section>
-                <p>Sorry, no results found for {searchName}.</p>
+        <h1>Beers, Beers & More Beers</h1>
+        <p>It's that time of year to select your beer!</p>
+        <p>Anyone is free to select any kind of beer they would like.</p>
+        <p>
+          However, there is a limit of the number of beers, 60 and a limit on
+          the range of beers, 10
+        </p>
+        <div className="c-app__basket">
+          <h2 className="c-app__basket-header">
+            Basket ({Object.keys(basket).length}/60)
+          </h2>
+          {Object.keys(basket).length > 0 && (
+            <button onClick={this.onViewBasket} className="c-app__btn">
+              {isViewingBasket ? "Hide Basket" : "View Basket"}
+            </button>
+          )}
+          {isViewingBasket &&
+            Object.keys(basket).map(brewId => (
+              <section key={brewId}>
+                <div className="c-app__item">
+                  <img src={basket[brewId].image_url} className="c-app__img" />
+                  <span className="c-app__title">
+                    {basket[brewId].name} ({basket[brewId].tagline})
+                    <button
+                      className="c-app__btn"
+                      onClick={this.onRemovefromBasket.bind(this, brewId)}
+                    >
+                      Remove
+                    </button>
+                  </span>
+                </div>
               </section>
-            ) : (
-              searchResults.map(result => (
-                <section key={result.id}>
-                  <div className="c-app__item">
-                    <img src={result.image_url} className="c-app__img" />
-                    <span className="c-app__title">
-                      {result.name} ({result.tagline})
-                      <button onClick={this.onAddToBasket.bind(this, result)}>
-                        Add
-                      </button>
-                    </span>
-                  </div>
-                </section>
-              ))
+            ))}
+        </div>
+        <div className="c-app__search">
+          <h2>Search</h2>
+          <form onSubmit={this.onGetBrewByName}>
+            <input
+              name="searchName"
+              type="text"
+              placeholder="Name"
+              value={searchName}
+              onChange={this.onHandleChange}
+            />
+            <input type="submit" value="Search by name" />
+            {searchResults !== null && (
+              <button onClick={this.onResetSearch}>Reset Search</button>
             )}
-          </section>
-        )}
+          </form>
+          {searchResults !== null && (
+            <section>
+              <h3>Brews Found</h3>
+              {searchResults.length === 0 ? (
+                <section>
+                  <p>Sorry, no results found for {searchName}.</p>
+                </section>
+              ) : (
+                searchResults.map(result => (
+                  <section key={result.id}>
+                    <div className="c-app__item">
+                      <img src={result.image_url} className="c-app__img" />
+                      <span className="c-app__title">
+                        {result.name} ({result.tagline})
+                        <button
+                          className="c-app__btn"
+                          onClick={this.onAddToBasket.bind(this, result)}
+                        >
+                          Add
+                        </button>
+                      </span>
+                    </div>
+                  </section>
+                ))
+              )}
+            </section>
+          )}
+        </div>
       </section>
     );
   };

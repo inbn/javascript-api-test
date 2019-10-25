@@ -5,7 +5,19 @@ input {
   font-family: "Exo", sans-serif;
 }
 
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
 .c-app {
+  &__basket,
+  &__search {
+    background: #ced8de;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+  }
   &__basket-header {
     display: inline-block;
     margin-right: 10px;
@@ -14,7 +26,7 @@ input {
   &__item {
     padding: 10px;
     &:hover {
-      background-color: #b6dcf0;
+      background-color: #30aaf2;
     }
   }
 
@@ -26,5 +38,12 @@ input {
   &__title {
     vertical-align: middle;
     margin-left: 20px;
+  }
+
+  &__btn {
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+    margin-left: 10px;
   }
 }
