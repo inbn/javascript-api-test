@@ -48,10 +48,10 @@ To update build:
 
 # Extra objectives achieved with a bit more time on Sunday
 * Display a list of all brews, including pagination (e.g. https://api.punkapi.com/v2/beers?page=2&per_page=20) to select from that can be refined by search
+* Include more ways of refining search e.g. by beer type ... hops, yeast, malt, perhaps with drop downs etc
 
 # Objectives I would still liked to have to have achieved to complete test
 * Design a better looking and more user friendly site
-* Include more ways of refining search e.g. by beer type ... hops, yeast, malt, perhaps with drop downs etc
 * Include error handling
 * Create friendlier modal dialog indicate errors and warnings
 * Organise basket so that the same type of beer is only listed once, with a count next to it

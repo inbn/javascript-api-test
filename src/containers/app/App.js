@@ -7,7 +7,17 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchName: "",
+      searchBeerName: "",
+      searchYeastName: "",
+      searchHopsName: "",
+      searchMaltName: "",
+      searchFoodName: "",
+      searchAbvGt: "0",
+      searchAbvLt: "30",
+      searchIbuGt: "0",
+      searchIbuLt: "250",
+      searchEbcGt: "0",
+      searchEbcLt: "300",
       searchResults: null,
       beerTypesSelected: [],
       basket: {},
@@ -38,13 +48,29 @@ class App extends React.Component {
   onGetBrews = e => {
     if (e) e.preventDefault();
 
-    const { page, limit, searchName } = this.state;
+    const {
+      page,
+      limit,
+      searchBeerName,
+      searchYeastName,
+      searchHopsName,
+      searchMaltName,
+      searchFoodName,
+      searchAbvGt,
+      searchAbvLt,
+      searchIbuGt,
+      searchIbuLt,
+      searchEbcGt,
+      searchEbcLt
+    } = this.state;
 
-    let url = `https://api.punkapi.com/v2/beers?page=${page}&per_page=${limit}`;
+    let url = `https://api.punkapi.com/v2/beers?page=${page}&per_page=${limit}&abv_gt=${searchAbvGt}&abv_lt=${searchAbvLt}&ibu_gt=${searchIbuGt}&ibu_lt=${searchIbuLt}&ebc_gt=${searchEbcGt}&ebc_lt=${searchEbcLt}`;
 
-    if (searchName !== "") {
-      url += `&beer_name=${searchName}`;
-    }
+    if (searchBeerName !== "") url += `&beer_name=${searchBeerName}`;
+    if (searchYeastName !== "") url += `&beer_name=${searchYeastName}`;
+    if (searchHopsName !== "") url += `&beer_name=${searchHopsName}`;
+    if (searchMaltName !== "") url += `&beer_name=${searchMaltName}`;
+    if (searchFoodName !== "") url += `&beer_name=${searchFoodName}`;
 
     axios.get(url).then(response => {
       let allowNext = false;
@@ -60,7 +86,20 @@ class App extends React.Component {
   };
 
   onResetSearch = () => {
-    this.setState({ searchResults: null, searchName: "" });
+    this.setState({
+      searchResults: null,
+      searchBeerName: "",
+      searchYeastName: "",
+      searchHopsName: "",
+      searchMaltName: "",
+      searchFoodName: "",
+      searchAbvGt: "0",
+      searchAbvLt: "30",
+      searchIbuGt: "0",
+      searchIbuLt: "250",
+      searchEbcGt: "0",
+      searchEbcLt: "300"
+    });
     this.onGetBrews();
   };
 
@@ -113,7 +152,17 @@ class App extends React.Component {
 
   render = () => {
     const {
-      searchName,
+      searchBeerName,
+      searchYeastName,
+      searchHopsName,
+      searchMaltName,
+      searchFoodName,
+      searchAbvGt,
+      searchAbvLt,
+      searchIbuGt,
+      searchIbuLt,
+      searchEbcGt,
+      searchEbcLt,
       searchResults,
       basket,
       isViewingBasket,
@@ -167,13 +216,125 @@ class App extends React.Component {
         <div className="c-app__search">
           <h2>Search</h2>
           <form onSubmit={this.onResetSearch}>
-            <input
-              name="searchName"
-              type="text"
-              placeholder="Name"
-              value={searchName}
-              onChange={this.onHandleChange}
-            />
+            <div>
+              <input
+                name="searchBeerName"
+                type="text"
+                placeholder="Search by beer name"
+                value={searchBeerName}
+                onChange={this.onHandleChange}
+              />
+            </div>
+            <div>
+              <input
+                name="searchYeastName"
+                type="text"
+                placeholder="Refine by yeast name"
+                value={searchBeerName}
+                onChange={this.onHandleChange}
+              />
+            </div>
+            <div>
+              <input
+                name="searchHopsName"
+                type="text"
+                placeholder="Refine by hops name"
+                value={searchHopsName}
+                onChange={this.onHandleChange}
+              />
+            </div>
+            <div>
+              <input
+                name="searchMaltName"
+                type="text"
+                placeholder="Refine by malt name"
+                value={searchMaltName}
+                onChange={this.onHandleChange}
+              />
+            </div>
+            <div>
+              <input
+                name="searchFoodName"
+                type="text"
+                placeholder="Refine by matching food"
+                value={searchFoodName}
+                onChange={this.onHandleChange}
+              />
+            </div>
+            <div>
+              <div>
+                ABV Greater than:{" "}
+                <input
+                  type="range"
+                  min="1"
+                  max="30"
+                  value={searchAbvGt}
+                  name="searchAbvGt"
+                  onChange={this.onHandleChange}
+                />
+                {searchAbvGt}
+              </div>
+              <div>
+                ABV Less than:{" "}
+                <input
+                  type="range"
+                  min="1"
+                  max="30"
+                  value={searchAbvLt}
+                  name="searchAbvLt"
+                  onChange={this.onHandleChange}
+                />
+                {searchAbvLt}
+              </div>
+              <div>
+                IBU Greater than:{" "}
+                <input
+                  type="range"
+                  min="1"
+                  max="250"
+                  value={searchIbuGt}
+                  name="searchIbuGt"
+                  onChange={this.onHandleChange}
+                />
+                {searchIbuGt}
+              </div>
+              <div>
+                IBU Less than:{" "}
+                <input
+                  type="range"
+                  min="1"
+                  max="250"
+                  value={searchIbuLt}
+                  name="searchIbuLt"
+                  onChange={this.onHandleChange}
+                />
+                {searchIbuLt}
+              </div>
+              <div>
+                EBC Greater than:{" "}
+                <input
+                  type="range"
+                  min="1"
+                  max="300"
+                  value={searchEbcGt}
+                  name="searchEbcGt"
+                  onChange={this.onHandleChange}
+                />
+                {searchEbcGt}
+              </div>
+              <div>
+                EBC Less than:{" "}
+                <input
+                  type="range"
+                  min="1"
+                  max="300"
+                  value={searchEbcLt}
+                  name="searchEbcLt"
+                  onChange={this.onHandleChange}
+                />
+                {searchEbcLt}
+              </div>
+            </div>
             <input type="submit" value="Reset Search" />
           </form>
           {searchResults !== null && (
@@ -181,7 +342,7 @@ class App extends React.Component {
               <h3>Brews Found</h3>
               {searchResults.length === 0 ? (
                 <section>
-                  <p>Sorry, no results found for {searchName}.</p>
+                  <p>Sorry, no results found for {searchBeerName}.</p>
                 </section>
               ) : (
                 searchResults.map(result => (
