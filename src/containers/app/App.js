@@ -20,15 +20,13 @@ class App extends React.Component {
       searchEbcGt: "0",
       searchEbcLt: "300",
       searchResults: null,
-      beerTypesSelected: [],
       basket: {},
+      basketCount: 0,
       isViewingBasket: false,
       page: 1,
       limit: 11,
       allowNext: false
     };
-
-    this.basketKey = 1;
 
     this.onHandleChange = this.onHandleChange.bind(this);
     this.onGetBrews = this.onGetBrews.bind(this);
@@ -105,35 +103,38 @@ class App extends React.Component {
   };
 
   onAddToBasket = result => {
-    const { beerTypesSelected } = this.state;
     let basket = this.state.basket;
+    let basketCount = this.state.basketCount;
 
-    if (
-      !beerTypesSelected.includes(result.name) &&
-      beerTypesSelected.length === 10
-    ) {
+    if (!basket[result.name] && Object.keys(basket).length === 10) {
       // TODO: Create friendlier modal dialog or banner to indicate limit of 10 types of beer reached
       return alert("Sorry limit of beer types reached");
     }
 
-    if (!beerTypesSelected.includes(result.name)) {
-      beerTypesSelected.push(result.name);
-    }
-
     if (Object.keys(basket).length < 60) {
-      basket[this.basketKey] = result;
-      this.basketKey++;
-      this.setState({ basket });
+      if (basket[result.name]) {
+        basket[result.name].count++;
+        basketCount++;
+      } else {
+        result.count = 1;
+        basket[result.name] = result;
+        basketCount++;
+      }
+
+      this.setState({ basket, basketCount });
     } else {
       // TODO: Create  friendlier modal dialog or banner to indicate limit of 60 reached
       alert("Sorry limit number of beers reached");
     }
   };
 
-  onRemovefromBasket = brewId => {
+  onRemovefromBasket = name => {
     let basket = this.state.basket;
-    delete basket[brewId];
-    this.setState({ basket });
+    let basketCount = this.state.basketCount;
+    basket[name].count--;
+    if (basket[name].count < 1) delete basket[name];
+    basketCount--;
+    this.setState({ basket, basketCount });
   };
 
   onViewBasket = () => {
@@ -169,6 +170,7 @@ class App extends React.Component {
       searchEbcLt,
       searchResults,
       basket,
+      basketCount,
       isViewingBasket,
       page,
       allowNext
@@ -192,18 +194,23 @@ class App extends React.Component {
         </p>
 
         <div>
-          <span className={classNames({
-            "c-app__tab": true,
-            "c-app__tab--active": !isViewingBasket
-          })} onClick={this.onViewCatalogue}>
+          <span
+            className={classNames({
+              "c-app__tab": true,
+              "c-app__tab--active": !isViewingBasket
+            })}
+            onClick={this.onViewCatalogue}
+          >
             Punk Catalogue
           </span>
-          <span className={classNames({
-            "c-app__tab": true,
-            "c-app__tab--active": isViewingBasket
-          })}
-          onClick={this.onViewBasket}>
-            Basket ({Object.keys(basket).length})
+          <span
+            className={classNames({
+              "c-app__tab": true,
+              "c-app__tab--active": isViewingBasket
+            })}
+            onClick={this.onViewBasket}
+          >
+            Basket ({basketCount})
           </span>
         </div>
         {!isViewingBasket && (
@@ -386,7 +393,8 @@ class App extends React.Component {
                       className="c-app__img"
                     />
                     <span className="c-app__title">
-                      {basket[brewId].name} ({basket[brewId].tagline})
+                      {basket[brewId].name} ({basket[brewId].tagline}) x{" "}
+                      {basket[brewId].count}
                       <button
                         className="c-app__btn"
                         onClick={this.onRemovefromBasket.bind(this, brewId)}
