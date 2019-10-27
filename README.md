@@ -33,7 +33,7 @@ To update build:
 ```
 
 
-# Objectives met (some are outside of test requirements)
+# Objectives met (some are outside of test requirements) on the Friday, the day the test was assigned
 * Created single page application
 * Added ability to search beers by name
 * Display search results with image, name and taglines
@@ -46,15 +46,16 @@ To update build:
 * Host application on firebase
 * Include instructions on how to view and amend hosted site
 
+# Extra objectives achieved with a bit more time on Sunday
+* Display a list of all brews, including pagination (e.g. https://api.punkapi.com/v2/beers?page=2&per_page=20) to select from that can be refined by search
 
-# Objectives I would like to have achieved with more time
+# Objectives I would still liked to have to have achieved to complete test
 * Design a better looking and more user friendly site
 * Include more ways of refining search e.g. by beer type ... hops, yeast, malt, perhaps with drop downs etc
 * Include error handling
 * Create friendlier modal dialog indicate errors and warnings
 * Organise basket so that the same type of beer is only listed once, with a count next to it
 e.g. Pale Ale x 2
-* Display a list of all brews, including pagination (e.g. https://api.punkapi.com/v2/beers?page=2&per_page=20) to select from that can be refined by search
 * Add the concept of users so a username can be associated with a beer choice
 * Add database e.g. firestore to hold users details and basket
 * Add authentication through firebase so only the expected 30 employees can view/ammend beer choices
