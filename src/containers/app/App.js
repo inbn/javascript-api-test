@@ -11,40 +11,57 @@ class App extends React.Component {
       searchResults: null,
       beerTypesSelected: [],
       basket: {},
-      isViewingBasket: false
+      isViewingBasket: false,
+      page: 1,
+      limit: 11,
+      allowNext: false
     };
 
     this.basketKey = 1;
 
     this.onHandleChange = this.onHandleChange.bind(this);
-    this.onGetBrewByName = this.onGetBrewByName.bind(this);
+    this.onGetBrews = this.onGetBrews.bind(this);
     this.onResetSearch = this.onResetSearch.bind(this);
   }
+
+  componentDidMount = () => {
+    this.onGetBrews();
+  };
 
   onHandleChange = e => {
     let name = e.target.name;
     let value = e.target.value;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, page: 1 });
+    this.onGetBrews();
   };
 
-  // TO DO add more ways of refining search e.g. by beer type ... hops, yeast, malt
-  // perhaps with drop downs etc
-  onGetBrewByName = e => {
-    e.preventDefault();
-    const { searchName } = this.state;
-    axios
-      .get(`https://api.punkapi.com/v2/beers?beer_name=${searchName}`)
-      .then(response => {
-        console.log("get brew by name response:", response);
-        if (response && response.data) {
-          this.setState({ searchResults: response.data });
+  onGetBrews = e => {
+    if (e) e.preventDefault();
+
+    const { page, limit, searchName } = this.state;
+
+    let url = `https://api.punkapi.com/v2/beers?page=${page}&per_page=${limit}`;
+
+    if (searchName !== "") {
+      url += `&beer_name=${searchName}`;
+    }
+
+    axios.get(url).then(response => {
+      let allowNext = false;
+      if (response && response.data) {
+        if (response.data.length === limit) {
+          response.data.pop();
+          allowNext = true;
         }
-      });
+        this.setState({ searchResults: response.data, allowNext });
+      }
+    });
     // TO DO error handling
   };
 
   onResetSearch = () => {
     this.setState({ searchResults: null, searchName: "" });
+    this.onGetBrews();
   };
 
   onAddToBasket = result => {
@@ -84,8 +101,25 @@ class App extends React.Component {
     this.onResetSearch();
   };
 
+  onNext = () => {
+    this.setState({ page: this.state.page + 1 });
+    this.onGetBrews();
+  };
+
+  onPrevious = () => {
+    this.setState({ page: this.state.page - 1 });
+    this.onGetBrews();
+  };
+
   render = () => {
-    const { searchName, searchResults, basket, isViewingBasket } = this.state;
+    const {
+      searchName,
+      searchResults,
+      basket,
+      isViewingBasket,
+      page,
+      allowNext
+    } = this.state;
 
     /*
     TO DO organise basket so that the same type of beer is only listed once, with a count next to it
@@ -132,7 +166,7 @@ class App extends React.Component {
         </div>
         <div className="c-app__search">
           <h2>Search</h2>
-          <form onSubmit={this.onGetBrewByName}>
+          <form onSubmit={this.onResetSearch}>
             <input
               name="searchName"
               type="text"
@@ -140,10 +174,7 @@ class App extends React.Component {
               value={searchName}
               onChange={this.onHandleChange}
             />
-            <input type="submit" value="Search by name" />
-            {searchResults !== null && (
-              <button onClick={this.onResetSearch}>Reset Search</button>
-            )}
+            <input type="submit" value="Reset Search" />
           </form>
           {searchResults !== null && (
             <section>
@@ -170,6 +201,17 @@ class App extends React.Component {
                   </section>
                 ))
               )}
+              {
+                <button disabled={page === 1} onClick={this.onPrevious}>
+                  Prev
+                </button>
+              }
+              <span>{page}</span>
+              {
+                <button disabled={!allowNext} onClick={this.onNext}>
+                  Next
+                </button>
+              }
             </section>
           )}
         </div>
