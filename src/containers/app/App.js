@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import classNames from "classnames";
 
 import "./App.scss";
 
@@ -109,7 +110,7 @@ class App extends React.Component {
 
     if (
       !beerTypesSelected.includes(result.name) &&
-      beerTypesSelected.length === 3
+      beerTypesSelected.length === 10
     ) {
       // TODO: Create friendlier modal dialog or banner to indicate limit of 10 types of beer reached
       return alert("Sorry limit of beer types reached");
@@ -136,8 +137,11 @@ class App extends React.Component {
   };
 
   onViewBasket = () => {
-    this.setState({ isViewingBasket: !this.state.isViewingBasket });
-    this.onResetSearch();
+    this.setState({ isViewingBasket: true });
+  };
+
+  onViewCatalogue = () => {
+    this.setState({ isViewingBasket: false });
   };
 
   onNext = () => {
@@ -186,196 +190,215 @@ class App extends React.Component {
           However, there is a limit of the number of beers, 60 and a limit on
           the range of beers, 10
         </p>
-        <div className="c-app__basket">
-          <h2 className="c-app__basket-header">
-            Basket ({Object.keys(basket).length}/60)
-          </h2>
-          {Object.keys(basket).length > 0 && (
-            <button onClick={this.onViewBasket} className="c-app__btn">
-              {isViewingBasket ? "Hide Basket" : "View Basket"}
-            </button>
-          )}
-          {isViewingBasket &&
-            Object.keys(basket).map(brewId => (
-              <section key={brewId}>
-                <div className="c-app__item">
-                  <img src={basket[brewId].image_url} className="c-app__img" />
-                  <span className="c-app__title">
-                    {basket[brewId].name} ({basket[brewId].tagline})
-                    <button
-                      className="c-app__btn"
-                      onClick={this.onRemovefromBasket.bind(this, brewId)}
-                    >
-                      Remove
-                    </button>
-                  </span>
+
+        <div>
+          <span className={classNames({
+            "c-app__tab": true,
+            "c-app__tab--active": !isViewingBasket
+          })} onClick={this.onViewCatalogue}>
+            Punk Catalogue
+          </span>
+          <span className={classNames({
+            "c-app__tab": true,
+            "c-app__tab--active": isViewingBasket
+          })}
+          onClick={this.onViewBasket}>
+            Basket ({Object.keys(basket).length})
+          </span>
+        </div>
+        {!isViewingBasket && (
+          <div className="c-app__search">
+            <h2>Search</h2>
+            <form onSubmit={this.onResetSearch}>
+              <div>
+                <input
+                  name="searchBeerName"
+                  type="text"
+                  placeholder="Search by beer name"
+                  value={searchBeerName}
+                  onChange={this.onHandleChange}
+                />
+              </div>
+              <div>
+                <input
+                  name="searchYeastName"
+                  type="text"
+                  placeholder="Refine by yeast name"
+                  value={searchBeerName}
+                  onChange={this.onHandleChange}
+                />
+              </div>
+              <div>
+                <input
+                  name="searchHopsName"
+                  type="text"
+                  placeholder="Refine by hops name"
+                  value={searchHopsName}
+                  onChange={this.onHandleChange}
+                />
+              </div>
+              <div>
+                <input
+                  name="searchMaltName"
+                  type="text"
+                  placeholder="Refine by malt name"
+                  value={searchMaltName}
+                  onChange={this.onHandleChange}
+                />
+              </div>
+              <div>
+                <input
+                  name="searchFoodName"
+                  type="text"
+                  placeholder="Refine by matching food"
+                  value={searchFoodName}
+                  onChange={this.onHandleChange}
+                />
+              </div>
+              <div>
+                <div>
+                  ABV Greater than:{" "}
+                  <input
+                    type="range"
+                    min="1"
+                    max="30"
+                    value={searchAbvGt}
+                    name="searchAbvGt"
+                    onChange={this.onHandleChange}
+                  />
+                  {searchAbvGt}
                 </div>
-              </section>
-            ))}
-        </div>
-        <div className="c-app__search">
-          <h2>Search</h2>
-          <form onSubmit={this.onResetSearch}>
-            <div>
-              <input
-                name="searchBeerName"
-                type="text"
-                placeholder="Search by beer name"
-                value={searchBeerName}
-                onChange={this.onHandleChange}
-              />
-            </div>
-            <div>
-              <input
-                name="searchYeastName"
-                type="text"
-                placeholder="Refine by yeast name"
-                value={searchBeerName}
-                onChange={this.onHandleChange}
-              />
-            </div>
-            <div>
-              <input
-                name="searchHopsName"
-                type="text"
-                placeholder="Refine by hops name"
-                value={searchHopsName}
-                onChange={this.onHandleChange}
-              />
-            </div>
-            <div>
-              <input
-                name="searchMaltName"
-                type="text"
-                placeholder="Refine by malt name"
-                value={searchMaltName}
-                onChange={this.onHandleChange}
-              />
-            </div>
-            <div>
-              <input
-                name="searchFoodName"
-                type="text"
-                placeholder="Refine by matching food"
-                value={searchFoodName}
-                onChange={this.onHandleChange}
-              />
-            </div>
-            <div>
-              <div>
-                ABV Greater than:{" "}
-                <input
-                  type="range"
-                  min="1"
-                  max="30"
-                  value={searchAbvGt}
-                  name="searchAbvGt"
-                  onChange={this.onHandleChange}
-                />
-                {searchAbvGt}
+                <div>
+                  ABV Less than:{" "}
+                  <input
+                    type="range"
+                    min="1"
+                    max="30"
+                    value={searchAbvLt}
+                    name="searchAbvLt"
+                    onChange={this.onHandleChange}
+                  />
+                  {searchAbvLt}
+                </div>
+                <div>
+                  IBU Greater than:{" "}
+                  <input
+                    type="range"
+                    min="1"
+                    max="250"
+                    value={searchIbuGt}
+                    name="searchIbuGt"
+                    onChange={this.onHandleChange}
+                  />
+                  {searchIbuGt}
+                </div>
+                <div>
+                  IBU Less than:{" "}
+                  <input
+                    type="range"
+                    min="1"
+                    max="250"
+                    value={searchIbuLt}
+                    name="searchIbuLt"
+                    onChange={this.onHandleChange}
+                  />
+                  {searchIbuLt}
+                </div>
+                <div>
+                  EBC Greater than:{" "}
+                  <input
+                    type="range"
+                    min="1"
+                    max="300"
+                    value={searchEbcGt}
+                    name="searchEbcGt"
+                    onChange={this.onHandleChange}
+                  />
+                  {searchEbcGt}
+                </div>
+                <div>
+                  EBC Less than:{" "}
+                  <input
+                    type="range"
+                    min="1"
+                    max="300"
+                    value={searchEbcLt}
+                    name="searchEbcLt"
+                    onChange={this.onHandleChange}
+                  />
+                  {searchEbcLt}
+                </div>
               </div>
-              <div>
-                ABV Less than:{" "}
-                <input
-                  type="range"
-                  min="1"
-                  max="30"
-                  value={searchAbvLt}
-                  name="searchAbvLt"
-                  onChange={this.onHandleChange}
-                />
-                {searchAbvLt}
-              </div>
-              <div>
-                IBU Greater than:{" "}
-                <input
-                  type="range"
-                  min="1"
-                  max="250"
-                  value={searchIbuGt}
-                  name="searchIbuGt"
-                  onChange={this.onHandleChange}
-                />
-                {searchIbuGt}
-              </div>
-              <div>
-                IBU Less than:{" "}
-                <input
-                  type="range"
-                  min="1"
-                  max="250"
-                  value={searchIbuLt}
-                  name="searchIbuLt"
-                  onChange={this.onHandleChange}
-                />
-                {searchIbuLt}
-              </div>
-              <div>
-                EBC Greater than:{" "}
-                <input
-                  type="range"
-                  min="1"
-                  max="300"
-                  value={searchEbcGt}
-                  name="searchEbcGt"
-                  onChange={this.onHandleChange}
-                />
-                {searchEbcGt}
-              </div>
-              <div>
-                EBC Less than:{" "}
-                <input
-                  type="range"
-                  min="1"
-                  max="300"
-                  value={searchEbcLt}
-                  name="searchEbcLt"
-                  onChange={this.onHandleChange}
-                />
-                {searchEbcLt}
-              </div>
-            </div>
-            <input type="submit" value="Reset Search" />
-          </form>
-          {searchResults !== null && (
-            <section>
-              <h3>Brews Found</h3>
-              {searchResults.length === 0 ? (
-                <section>
-                  <p>Sorry, no results found for {searchBeerName}.</p>
-                </section>
-              ) : (
-                searchResults.map(result => (
-                  <section key={result.id}>
-                    <div className="c-app__item">
-                      <img src={result.image_url} className="c-app__img" />
-                      <span className="c-app__title">
-                        {result.name} ({result.tagline})
-                        <button
-                          className="c-app__btn"
-                          onClick={this.onAddToBasket.bind(this, result)}
-                        >
-                          Add
-                        </button>
-                      </span>
-                    </div>
+              <input type="submit" value="Reset Search" />
+            </form>
+            {searchResults !== null && (
+              <section>
+                <h3>Brews Found</h3>
+                {searchResults.length === 0 ? (
+                  <section>
+                    <p>Sorry, no results found for {searchBeerName}.</p>
                   </section>
-                ))
-              )}
-              {
-                <button disabled={page === 1} onClick={this.onPrevious}>
-                  Prev
-                </button>
-              }
-              <span>{page}</span>
-              {
-                <button disabled={!allowNext} onClick={this.onNext}>
-                  Next
-                </button>
-              }
-            </section>
-          )}
-        </div>
+                ) : (
+                  searchResults.map(result => (
+                    <section key={result.id}>
+                      <div className="c-app__item">
+                        <img src={result.image_url} className="c-app__img" />
+                        <span className="c-app__title">
+                          {result.name} ({result.tagline})
+                          <button
+                            className="c-app__btn"
+                            onClick={this.onAddToBasket.bind(this, result)}
+                          >
+                            Add
+                          </button>
+                        </span>
+                      </div>
+                    </section>
+                  ))
+                )}
+                {
+                  <button disabled={page === 1} onClick={this.onPrevious}>
+                    Prev
+                  </button>
+                }
+                <span>{page}</span>
+                {
+                  <button disabled={!allowNext} onClick={this.onNext}>
+                    Next
+                  </button>
+                }
+              </section>
+            )}
+          </div>
+        )}
+
+        {isViewingBasket && (
+          <div className="c-app__basket">
+            <h2 className="c-app__basket-header">
+              Basket ({Object.keys(basket).length}/60)
+            </h2>
+            {isViewingBasket &&
+              Object.keys(basket).map(brewId => (
+                <section key={brewId}>
+                  <div className="c-app__item">
+                    <img
+                      src={basket[brewId].image_url}
+                      className="c-app__img"
+                    />
+                    <span className="c-app__title">
+                      {basket[brewId].name} ({basket[brewId].tagline})
+                      <button
+                        className="c-app__btn"
+                        onClick={this.onRemovefromBasket.bind(this, brewId)}
+                      >
+                        Remove
+                      </button>
+                    </span>
+                  </div>
+                </section>
+              ))}
+          </div>
+        )}
       </section>
     );
   };

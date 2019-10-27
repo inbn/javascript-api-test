@@ -5,7 +5,9 @@
   "author": "Carlene Cannon-Conner <carlene.cannon.conner@gmail.com>",
   "license": "UNLICENSED",
   "repository": "git@github.com:15gifts/javascript-api-test.git",
-  "dependencies": {},
+  "dependencies": {
+    "classnames": "^2.2.6"
+  },
   "devDependencies": {
     "@babel/core": "7.5.5",
     "@babel/polyfill": "^7.4.4",

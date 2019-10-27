@@ -11,12 +11,29 @@ input[type="submit"] {
 }
 
 .c-app {
+  &__tab {
+    background-color: #30aaf2;
+    width: 130px;
+    border-radius: 10px 10px 0px 0px;
+    display: inline-block;
+    padding: 10px;
+    margin-left: 20px;
+    &:hover {
+      cursor: pointer;
+      background-color: #5ab7ed;
+    }
+
+    &--active {
+      background-color: #2382ba;
+    }
+  }
+
   &__basket,
   &__search {
     background: #ced8de;
     border-radius: 10px;
     padding: 10px;
-    margin: 10px;
+    margin: 0px 10px;
   }
   &__basket-header {
     display: inline-block;
