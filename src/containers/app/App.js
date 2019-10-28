@@ -66,10 +66,10 @@ class App extends React.Component {
     let url = `https://api.punkapi.com/v2/beers?page=${page}&per_page=${limit}&abv_gt=${searchAbvGt}&abv_lt=${searchAbvLt}&ibu_gt=${searchIbuGt}&ibu_lt=${searchIbuLt}&ebc_gt=${searchEbcGt}&ebc_lt=${searchEbcLt}`;
 
     if (searchBeerName !== "") url += `&beer_name=${searchBeerName}`;
-    if (searchYeastName !== "") url += `&beer_name=${searchYeastName}`;
-    if (searchHopsName !== "") url += `&beer_name=${searchHopsName}`;
-    if (searchMaltName !== "") url += `&beer_name=${searchMaltName}`;
-    if (searchFoodName !== "") url += `&beer_name=${searchFoodName}`;
+    if (searchYeastName !== "") url += `&yeast=${searchYeastName}`;
+    if (searchHopsName !== "") url += `&hops=${searchHopsName}`;
+    if (searchMaltName !== "") url += `&malt=${searchMaltName}`;
+    if (searchFoodName !== "") url += `&food=${searchFoodName}`;
 
     axios.get(url).then(response => {
       let allowNext = false;
@@ -231,7 +231,7 @@ class App extends React.Component {
                   name="searchYeastName"
                   type="text"
                   placeholder="Refine by yeast name"
-                  value={searchBeerName}
+                  value={searchYeastName}
                   onChange={this.onHandleChange}
                 />
               </div>
