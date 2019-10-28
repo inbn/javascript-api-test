@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css?family=Exo&display=swap");
+
+body,
+input {
+  font-family: "Exo", sans-serif;
+}
+
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+.c-app {
+  &__tab {
+    background-color: #30aaf2;
+    width: 130px;
+    border-radius: 10px 10px 0px 0px;
+    display: inline-block;
+    padding: 10px;
+    margin-left: 20px;
+    &:hover {
+      cursor: pointer;
+      background-color: #5ab7ed;
+    }
+
+    &--active {
+      background-color: #2382ba;
+    }
+  }
+
+  &__basket,
+  &__search {
+    background: #ced8de;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0px 10px;
+  }
+  &__basket-header {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  &__item {
+    padding: 10px;
+    &:hover {
+      background-color: #30aaf2;
+    }
+  }
+
+  &__img {
+    height: 90px;
+    vertical-align: middle;
+  }
+
+  &__title {
+    vertical-align: middle;
+    margin-left: 20px;
+  }
+
+  &__btn {
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+}
